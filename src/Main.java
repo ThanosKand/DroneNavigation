@@ -52,8 +52,8 @@ public class Main {
 
         Station[] stations = new Station[5];
         stations[0] = Roski;
-        stations[1] = Cop;
-        stations[2] = Palm;
+        stations[1] = Palm;
+        stations[2] = Cop;
         stations[3] = Sal;
         stations[4] = Pel;
 
@@ -87,7 +87,8 @@ public class Main {
         }
         writer.close();
 
-        Scanner in = new Scanner(System.in);
+       Scanner in = new Scanner(System.in);
+       /*
         System.out.println("Give starting point: ");
         int from = in.nextInt();
         System.out.println("Give end point: ");
@@ -95,6 +96,8 @@ public class Main {
 
         takeAngle(stations, from, to);
         System.out.println();
+
+        */
 
 
         // The path to the files with the distances is asked
