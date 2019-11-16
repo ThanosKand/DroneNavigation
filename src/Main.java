@@ -44,18 +44,18 @@ public class Main {
 
         /* ----------------------------- IO MANAGEMENT ----------------------------- */
 
-        Station s0 = new Station(0, 0);
-        Station s1 = new Station(1, 1);
-        Station s2 = new Station(4, 2);
-        Station s3 = new Station(4, 3);
-        Station s4 = new Station(1, 3);
+        Station Roski = new Station(0, 0);
+        Station Cop= new Station(1, 1);
+        Station Palm = new Station(4, 2);
+        Station Sal = new Station(4, 3);
+        Station Pel = new Station(1, 3);
 
         Station[] stations = new Station[5];
-        stations[0] = s0;
-        stations[1] = s1;
-        stations[2] = s2;
-        stations[3] = s3;
-        stations[4] = s4;
+        stations[0] = Roski;
+        stations[1] = Cop;
+        stations[2] = Palm;
+        stations[3] = Sal;
+        stations[4] = Pel;
 
         //System.out.println(calculateDistance(s1.getX(), s1.getY(), s2.getX(), s2.getY()));
         double[][] matrix = new double[5][5];
@@ -86,6 +86,7 @@ public class Main {
             writer.println("  ");
         }
         writer.close();
+
         Scanner in = new Scanner(System.in);
         System.out.println("Give starting point: ");
         int from = in.nextInt();
@@ -93,11 +94,13 @@ public class Main {
         int to = in.nextInt();
 
         takeAngle(stations, from, to);
+        System.out.println();
+
 
         // The path to the files with the distances is asked
         // Scanner input = new Scanner(System.in);
-       // System.out.println("Please, introduce the path where the text file is stored");
-       // String file = input.nextLine();
+        // System.out.println("Please, introduce the path where the text file is stored");
+        // String file = input.nextLine();
 
         // The size of the distance matrix is asked
         //System.out.println("Please, introduce the size of the matrix");
@@ -140,7 +143,40 @@ public class Main {
         // FIRST CALL TO THE RECURSIVE FUNCTION
         procedure(0, vertices, path, 0.0);
 
-        System.out.print("Path: " + optimalPath + ". Distance = " + optimalDistance);
+        System.out.println("Path: " + optimalPath + ". Distance = " + optimalDistance);
+
+        int[] pathArr = new int[6];
+        System.out.println("Write acquired path to an array");
+        for (int i = 0; i < pathArr.length; i++) {
+            pathArr[i] = in.nextInt();
+        }
+
+        for (int i = 0; i < pathArr.length; i++) {
+            System.out.print(pathArr[i]);
+        }
+
+        System.out.println();
+
+        for (int i = 0; i < pathArr.length; i++) {
+            if (i == pathArr.length - 1) {
+                System.out.println("We did it!");
+            } else if (i == pathArr.length - 2) {
+                System.out.print("Travel from station "+ pathArr[i] + " to " + "station 0 -> ");
+                System.out.print("We are heading back home: ");
+                double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
+                System.out.print("Turn ");
+                takeAngle(stations, pathArr[i], pathArr[0]);
+                System.out.println(" and fly " + di + " cm");
+            } else {
+                System.out.print("Travel from station "+ pathArr[i] + " to " + "station " + pathArr[i+1] +" -> ");
+                double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
+                System.out.print("Turn ");
+                takeAngle(stations, pathArr[i], pathArr[i + 1]);
+                System.out.print(" and fly " + di + " cm");
+            }
+            System.out.println();
+        }
+
     }
 
     public static double calculateDistance(int x1, int y1, int x2, int y2) {
@@ -156,7 +192,6 @@ public class Main {
         path = path + Integer.toString(initial) + " - ";
         int length = vertices.length;
         double newCostUntilHere;
-
 
         // Exit case, if there are no more options to evaluate (last node)
         if (length == 0) {
@@ -227,13 +262,16 @@ public class Main {
         double dXX = stations[to].getX() - stations[from].getX();
         double dYY = stations[to].getY() - stations[from].getY();
 
+        DecimalFormat decimals = new DecimalFormat("#.##");
+        decimals.setRoundingMode(RoundingMode.CEILING);
+
         if (dXX == 0) {
             if (stations[to].getY() < stations[from].getY()) {
                 angle = 180.0;
             } else if (stations[to].getY() > stations[from].getY()) {
                 angle = 0;
             }
-            System.out.println(angle);
+            System.out.print(angle);
             return;
         }
 
@@ -246,7 +284,7 @@ public class Main {
                 System.out.print("Clockwise: ");
 
             }
-            System.out.println(angle);
+            System.out.print(angle);
             return;
         }
 
@@ -280,7 +318,8 @@ public class Main {
             angle = 180 - angle;
             System.out.print("Counter clockwise: ");
         }
-        System.out.println(angle);
+        angle=Double.parseDouble(decimals.format(angle));
+        System.out.print(angle);
 
     }
 }
