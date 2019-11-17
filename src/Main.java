@@ -4,7 +4,9 @@ import java.io.*;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
@@ -44,38 +46,60 @@ public class Main {
 
         /* ----------------------------- IO MANAGEMENT ----------------------------- */
 
-        Station Roski = new Station(0, 0);
-        Station Cop= new Station(1, 1);
-        Station Palm = new Station(4, 2);
-        Station Sal = new Station(4, 3);
-        Station Pel = new Station(1, 3);
+        Scanner in = new Scanner(System.in);
+
+        Station s0 = new Station(0, 0);
+        Station s1= new Station(4, 3);
+        Station s2 = new Station(4, 2);
+        Station s3 = new Station(1, 3);
+        Station s4 = new Station(1, 1);
 
         Station[] stations = new Station[5];
-        stations[0] = Roski;
-        stations[1] = Palm;
-        stations[2] = Cop;
-        stations[3] = Sal;
-        stations[4] = Pel;
+        stations[0] = s0;
+        stations[1] = s1;
+        stations[2] = s2;
+        stations[3] = s3;
+        stations[4] = s4;
+
+        System.out.println("How many stations do you want to visit?");
+        int numberOfStations= in.nextInt();
+
+        System.out.println("Which stations do you want to visit?");
+        ArrayList<Integer> stationsToVisit= new ArrayList<>();
+
+        for (int i = 0; i <numberOfStations ; i++) {
+            stationsToVisit.add(in.nextInt());
+        }
 
         //System.out.println(calculateDistance(s1.getX(), s1.getY(), s2.getX(), s2.getY()));
-        double[][] matrix = new double[5][5];
+        double[][] matrix = new double[numberOfStations][numberOfStations];
 
 
         DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.CEILING);
 
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < numberOfStations; i++) {
+            for (int j = 0; j < numberOfStations; j++) {
                 if (i == j) {
                     matrix[i][j] = 0.0;
                 } else {
                     // matrix[i][j] = calculateDistance(stations[i].getX(), stations[i].getY(), stations[j].getX(), stations[j].getY());
-                    matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[i].getX(), stations[i].getY(), stations[j].getX(), stations[j].getY())));
+                    // matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[i].getX(), stations[i].getY(), stations[j].getX(), stations[j].getY())));
+                    // matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
+                    matrix[stationsToVisit.get(i)][stationsToVisit.get(j)] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
 
                 }
             }
         }
+
+       /* Iterator i = stationsToVisit.iterator();
+        while (stationsToVisit.hasNext())
+
+        */
+
+
+
 
         PrintWriter writer = new PrintWriter("DistancesMatrix.txt", StandardCharsets.UTF_8);
 
@@ -87,7 +111,7 @@ public class Main {
         }
         writer.close();
 
-       Scanner in = new Scanner(System.in);
+
        /*
         System.out.println("Give starting point: ");
         int from = in.nextInt();
@@ -213,8 +237,6 @@ public class Main {
         else if (costUntilHere > optimalDistance) {
             return 0;
         }
-
-
         // Common case, when there are several nodes in the list
         else {
 
@@ -283,7 +305,7 @@ public class Main {
                 angle = 90.0;
                 System.out.print("Counter clockwise: ");
             } else if (stations[to].getX() > stations[from].getX()) {
-                angle = -90.0;
+                angle = 90.0;
                 System.out.print("Clockwise: ");
 
             }
