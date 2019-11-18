@@ -49,25 +49,29 @@ public class Main {
         Scanner in = new Scanner(System.in);
 
         Station s0 = new Station(0, 0);
-        Station s1= new Station(4, 3);
+        Station s1 = new Station(4, 3);
         Station s2 = new Station(4, 2);
         Station s3 = new Station(1, 3);
         Station s4 = new Station(1, 1);
+        Station s5 = new Station(5, 4);
+        Station s6 = new Station(5, 0);
 
-        Station[] stations = new Station[5];
+        Station[] stations = new Station[7];
         stations[0] = s0;
         stations[1] = s1;
         stations[2] = s2;
         stations[3] = s3;
         stations[4] = s4;
+        stations[5] = s5;
+        stations[6] = s6;
 
         System.out.println("How many stations do you want to visit?");
-        int numberOfStations= in.nextInt();
+        int numberOfStations = in.nextInt();
 
         System.out.println("Which stations do you want to visit?");
-        ArrayList<Integer> stationsToVisit= new ArrayList<>();
+        ArrayList<Integer> stationsToVisit = new ArrayList<>();
 
-        for (int i = 0; i <numberOfStations ; i++) {
+        for (int i = 0; i < numberOfStations; i++) {
             stationsToVisit.add(in.nextInt());
         }
 
@@ -86,9 +90,9 @@ public class Main {
                 } else {
                     // matrix[i][j] = calculateDistance(stations[i].getX(), stations[i].getY(), stations[j].getX(), stations[j].getY());
                     // matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[i].getX(), stations[i].getY(), stations[j].getX(), stations[j].getY())));
-                    // matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
-                    matrix[stationsToVisit.get(i)][stationsToVisit.get(j)] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
-
+                    matrix[i][j] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
+                   // matrix[stationsToVisit.get(i)][stationsToVisit.get(j)] = Double.parseDouble(df.format(calculateDistance(stations[stationsToVisit.get(i)].getX(), stations[stationsToVisit.get(i)].getY(), stations[stationsToVisit.get(j)].getX(), stations[stationsToVisit.get(j)].getY())));
+                    // !!! Fix this: if we want to create a matrix of size 3, there is problem when we add station 4 because is out of the bound of the created matrix
                 }
             }
         }
@@ -99,12 +103,10 @@ public class Main {
         */
 
 
-
-
         PrintWriter writer = new PrintWriter("DistancesMatrix.txt", StandardCharsets.UTF_8);
 
-        for (int i = 0; i < 5; i++) {
-            for (int j = 0; j < 5; j++) {
+        for (int i = 0; i < numberOfStations; i++) {
+            for (int j = 0; j < numberOfStations; j++) {
                 writer.print(matrix[i][j] + " ");
             }
             writer.println("  ");
@@ -131,7 +133,7 @@ public class Main {
 
         // The size of the distance matrix is asked
         //System.out.println("Please, introduce the size of the matrix");
-        int size = 5;
+        int size = numberOfStations;
 
         // Distances array is initiated considering the size of the matrix
         distances = new double[size][size];
@@ -172,7 +174,31 @@ public class Main {
 
         System.out.println("Path: " + optimalPath + ". Distance = " + optimalDistance);
 
-        int[] pathArr = new int[6];
+        // Creating array of string length
+        int[] PathReferToMatrix = new int[optimalPath.length()];
+
+        // Copy character by character into array
+        for (int i = 0; i < optimalPath.length(); i++) {
+           char d=optimalPath.charAt(i);
+           PathReferToMatrix[i] = Integer.parseInt(String.valueOf(d));
+        }
+
+        for (int c : PathReferToMatrix) {
+            System.out.println(c);
+        }
+
+       // System.out.println(stationsToVisit.get(PathReferToMatrix[1]));
+
+        String FinalPAth="";
+        for (int i = 0; i < optimalPath.length() ; i++) {
+            FinalPAth= FinalPAth + "-" + stationsToVisit.get(PathReferToMatrix[i]);
+        }
+
+
+        System.out.println("This is the final path: " + FinalPAth);
+
+
+        int[] pathArr = new int[numberOfStations + 1];
         System.out.println("Write acquired path to an array");
         for (int i = 0; i < pathArr.length; i++) {
             pathArr[i] = in.nextInt();
@@ -188,14 +214,14 @@ public class Main {
             if (i == pathArr.length - 1) {
                 System.out.println("We did it!");
             } else if (i == pathArr.length - 2) {
-                System.out.print("Travel from station "+ pathArr[i] + " to " + "station 0 -> ");
+                System.out.print("Travel from station " + pathArr[i] + " to " + "station 0 -> ");
                 System.out.print("We are heading back home: ");
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
                 System.out.print("Turn ");
                 takeAngle(stations, pathArr[i], pathArr[0]);
                 System.out.println(" and fly " + di + " cm");
             } else {
-                System.out.print("Travel from station "+ pathArr[i] + " to " + "station " + pathArr[i+1] +" -> ");
+                System.out.print("Travel from station " + pathArr[i] + " to " + "station " + pathArr[i + 1] + " -> ");
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
                 System.out.print("Turn ");
                 takeAngle(stations, pathArr[i], pathArr[i + 1]);
@@ -216,7 +242,8 @@ public class Main {
     private static double procedure(int initial, int vertices[], String path, double costUntilHere) {
 
         // We concatenate the current path and the vertex taken as initial
-        path = path + Integer.toString(initial) + " - ";
+       // path = path + Integer.toString(initial) + " - ";
+        path = path + Integer.toString(initial);
         int length = vertices.length;
         double newCostUntilHere;
 
@@ -343,7 +370,7 @@ public class Main {
             angle = 180 - angle;
             System.out.print("Counter clockwise: ");
         }
-        angle=Double.parseDouble(decimals.format(angle));
+        angle = Double.parseDouble(decimals.format(angle));
         System.out.print(angle);
 
     }
