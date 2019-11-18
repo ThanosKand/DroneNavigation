@@ -172,7 +172,7 @@ public class Main {
         // FIRST CALL TO THE RECURSIVE FUNCTION
         procedure(0, vertices, path, 0.0);
 
-        System.out.println("Path: " + optimalPath + ". Distance = " + optimalDistance);
+        System.out.println("Path referring to matrix: " + optimalPath + ". Distance = " + optimalDistance);
 
         // Creating array of string length
         int[] PathReferToMatrix = new int[optimalPath.length()];
@@ -183,15 +183,17 @@ public class Main {
            PathReferToMatrix[i] = Integer.parseInt(String.valueOf(d));
         }
 
-        for (int c : PathReferToMatrix) {
-            System.out.println(c);
+     /*   for (int c : PathReferToMatrix) {
+            System.out.print(c);
         }
+
+      */
 
        // System.out.println(stationsToVisit.get(PathReferToMatrix[1]));
 
         String FinalPAth="";
         for (int i = 0; i < optimalPath.length() ; i++) {
-            FinalPAth= FinalPAth + "-" + stationsToVisit.get(PathReferToMatrix[i]);
+            FinalPAth= FinalPAth + stationsToVisit.get(PathReferToMatrix[i]);
         }
 
 
@@ -200,8 +202,14 @@ public class Main {
 
         int[] pathArr = new int[numberOfStations + 1];
         System.out.println("Write acquired path to an array");
-        for (int i = 0; i < pathArr.length; i++) {
+       /* for (int i = 0; i < pathArr.length; i++) {
             pathArr[i] = in.nextInt();
+        }
+
+        */
+
+        for (int i = 0; i < pathArr.length; i++) {
+            pathArr[i] = stationsToVisit.get(PathReferToMatrix[i]);
         }
 
         for (int i = 0; i < pathArr.length; i++) {
