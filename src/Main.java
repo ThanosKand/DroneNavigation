@@ -197,24 +197,25 @@ public class Main {
         }
 
 
-        System.out.println("This is the final path: " + FinalPAth);
+        System.out.println("Final path referring to actual stations: " + FinalPAth);
 
 
         int[] pathArr = new int[numberOfStations + 1];
-        System.out.println("Write acquired path to an array");
+        //System.out.println("Write acquired path to an array");
        /* for (int i = 0; i < pathArr.length; i++) {
             pathArr[i] = in.nextInt();
         }
-
         */
 
         for (int i = 0; i < pathArr.length; i++) {
             pathArr[i] = stationsToVisit.get(PathReferToMatrix[i]);
         }
 
-        for (int i = 0; i < pathArr.length; i++) {
+       /* for (int i = 0; i < pathArr.length; i++) {
             System.out.print(pathArr[i]);
         }
+
+        */
 
         System.out.println();
 
