@@ -29,6 +29,8 @@ import static java.lang.Math.atan2;
  * 2) As "initial" is the starting point, we have to remove it from the list of vertices
  * 3) Calculate the cost of visiting "initial" (costCurrentNode) + cost of visiting the rest from it ("costChildren")
  * 4) Return the minimum result from step 3
+ *
+ * https://github.com/Sinclert/Heuristics-TSP/blob/master/HK_Optimal.java
  */
 
 public class Main {
@@ -101,7 +103,6 @@ public class Main {
         while (stationsToVisit.hasNext())
 
         */
-
 
         PrintWriter writer = new PrintWriter("DistancesMatrix.txt", StandardCharsets.UTF_8);
 
@@ -219,6 +220,13 @@ public class Main {
 
         System.out.println();
 
+        PrintWriter commandsWriter = new PrintWriter("DroneCommands.txt", StandardCharsets.UTF_8);
+
+
+
+
+
+
         for (int i = 0; i < pathArr.length; i++) {
             if (i == pathArr.length - 1) {
                 System.out.println("We did it!");
@@ -228,16 +236,21 @@ public class Main {
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
                 System.out.print("Turn ");
                 takeAngle(stations, pathArr[i], pathArr[0]);
+                commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[0]));
+                commandsWriter.println("forward "+  di);
                 System.out.println(" and fly " + di + " cm");
             } else {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station " + pathArr[i + 1] + " -> ");
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
                 System.out.print("Turn ");
                 takeAngle(stations, pathArr[i], pathArr[i + 1]);
+                commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[0]));
+                commandsWriter.println("forward " + di);
                 System.out.print(" and fly " + di + " cm");
             }
             System.out.println();
         }
+         commandsWriter.close();
 
     }
 
@@ -251,8 +264,8 @@ public class Main {
     private static double procedure(int initial, int vertices[], String path, double costUntilHere) {
 
         // We concatenate the current path and the vertex taken as initial
-       // path = path + Integer.toString(initial) + " - ";
-        path = path + Integer.toString(initial);
+        // path = path + Integer.toString(initial) + " - ";
+        path += Integer.toString(initial);
         int length = vertices.length;
         double newCostUntilHere;
 
@@ -282,7 +295,6 @@ public class Main {
 
             // For each of the nodes of the list
             for (int i = 0; i < length; i++) {
-
                 // Each recursion new vertices list is constructed
                 for (int j = 0, k = 0; j < length; j++, k++) {
 
@@ -311,12 +323,11 @@ public class Main {
                     bestCost = totalCost;
                 }
             }
-
             return (bestCost);
         }
     }
 
-    public static void takeAngle(Station[] stations, int from, int to) {
+   /* public static void takeAngle(Station[] stations, int from, int to) {
 
         double angle = 0.0;
 
@@ -339,10 +350,10 @@ public class Main {
         if (dYY == 0) {
             if (stations[to].getX() < stations[from].getX()) {
                 angle = 90.0;
-                System.out.print("Counter clockwise: ");
+                System.out.print("ccw ");
             } else if (stations[to].getX() > stations[from].getX()) {
                 angle = 90.0;
-                System.out.print("Clockwise: ");
+                System.out.print("cw ");
 
             }
             System.out.print(angle);
@@ -354,7 +365,7 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             // angle = 90 - angle;
-            System.out.print("Clockwise: ");
+            System.out.print("cw ");
         }
 
         if (dXX > 0 && dYY < 0) {
@@ -362,14 +373,14 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dYY, dXX));
             angle = 90 + angle;
-            System.out.print("Clockwise: ");
+            System.out.print("cw ");
         }
 
         if (dXX < 0 && dYY > 0) {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
-            System.out.print("Counter clockwise: ");
+            System.out.print("ccw ");
         }
 
         if (dXX < 0 && dYY < 0) {
@@ -377,10 +388,88 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             angle = 180 - angle;
-            System.out.print("Counter clockwise: ");
+            System.out.print("ccw ");
         }
         angle = Double.parseDouble(decimals.format(angle));
         System.out.print(angle);
 
     }
+
+    */
+
+    public static String takeAngle(Station[] stations, int from, int to) {
+
+        double angle = 0.0;
+        String dir="";
+
+        double dXX = stations[to].getX() - stations[from].getX();
+        double dYY = stations[to].getY() - stations[from].getY();
+
+        DecimalFormat decimals = new DecimalFormat("#.##");
+        decimals.setRoundingMode(RoundingMode.CEILING);
+
+        if (dXX == 0) {
+            if (stations[to].getY() < stations[from].getY()) {
+                angle = 180.0;
+            } else if (stations[to].getY() > stations[from].getY()) {
+                angle = 0;
+            }
+            System.out.print(angle);
+            return "cw "+angle;
+        }
+
+        if (dYY == 0) {
+            if (stations[to].getX() < stations[from].getX()) {
+                angle = 90.0;
+                dir="ccw ";
+                System.out.print("ccw ");
+            } else if (stations[to].getX() > stations[from].getX()) {
+                angle = 90.0;
+                dir="cw ";
+                System.out.print("cw ");
+
+            }
+            System.out.print(angle);
+            return dir+angle;
+        }
+
+        if (dXX > 0 && dYY > 0) {
+            dXX = abs(stations[to].getX() - stations[from].getX());
+            dYY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+            // angle = 90 - angle;
+            dir="cw";
+            System.out.print("cw ");
+        }
+
+        if (dXX > 0 && dYY < 0) {
+            dXX = abs(stations[to].getX() - stations[from].getX());
+            dYY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dYY, dXX));
+            angle = 90 + angle;
+            dir="cw";
+            System.out.print("cw ");
+        }
+
+        if (dXX < 0 && dYY > 0) {
+            dXX = abs(stations[to].getX() - stations[from].getX());
+            dYY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+            dir="ccw";
+            System.out.print("ccw ");
+        }
+
+        if (dXX < 0 && dYY < 0) {
+            dXX = abs(stations[to].getX() - stations[from].getX());
+            dYY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+            angle = 180 - angle;
+            dir="ccw ";
+            System.out.print("ccw ");
+        }
+        angle = Double.parseDouble(decimals.format(angle));
+        System.out.print(angle);
+        return dir+angle;
+    }
+
 }
