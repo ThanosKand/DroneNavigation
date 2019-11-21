@@ -1,0 +1,10 @@
+cw 45.0
+forward 1.415
+cw 71.57
+forward 3.163
+cw 26.57
+forward 2.237
+cw 180.0
+forward 4.0
+ccw 90.0
+forward 5.0

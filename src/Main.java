@@ -234,23 +234,28 @@ public class Main {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station 0 -> ");
                 System.out.print("We are heading back home: ");
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
-                System.out.print("Turn ");
-                takeAngle(stations, pathArr[i], pathArr[0]);
+                System.out.print("Turn " +  takeAngle(stations, pathArr[i], pathArr[0]));
+               // takeAngle(stations, pathArr[i], pathArr[0]);
                 commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[0]));
                 commandsWriter.println("forward "+  di);
                 System.out.println(" and fly " + di + " cm");
             } else {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station " + pathArr[i + 1] + " -> ");
                 double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
-                System.out.print("Turn ");
+                System.out.print("Turn " +  takeAngle(stations, pathArr[i], pathArr[i+1]));
                 takeAngle(stations, pathArr[i], pathArr[i + 1]);
-                commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[0]));
+                commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[i+1]));
                 commandsWriter.println("forward " + di);
                 System.out.print(" and fly " + di + " cm");
             }
             System.out.println();
         }
          commandsWriter.close();
+
+        TelloDrone drone = new TelloDrone();
+        drone.connect();
+
+
 
     }
 
@@ -392,9 +397,7 @@ public class Main {
         }
         angle = Double.parseDouble(decimals.format(angle));
         System.out.print(angle);
-
     }
-
     */
 
     public static String takeAngle(Station[] stations, int from, int to) {
@@ -414,23 +417,24 @@ public class Main {
             } else if (stations[to].getY() > stations[from].getY()) {
                 angle = 0;
             }
-            System.out.print(angle);
-            return "cw "+angle;
+            dir="cw ";
+           // System.out.print(angle);
+            //return "cw "+angle;
         }
 
         if (dYY == 0) {
             if (stations[to].getX() < stations[from].getX()) {
                 angle = 90.0;
                 dir="ccw ";
-                System.out.print("ccw ");
+               // System.out.print("ccw ");
             } else if (stations[to].getX() > stations[from].getX()) {
                 angle = 90.0;
                 dir="cw ";
-                System.out.print("cw ");
+                //System.out.print("cw ");
 
             }
-            System.out.print(angle);
-            return dir+angle;
+            //System.out.print(angle);
+            // dir+angle;
         }
 
         if (dXX > 0 && dYY > 0) {
@@ -438,8 +442,8 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             // angle = 90 - angle;
-            dir="cw";
-            System.out.print("cw ");
+            dir="cw ";
+            //System.out.print("cw ");
         }
 
         if (dXX > 0 && dYY < 0) {
@@ -447,16 +451,16 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dYY, dXX));
             angle = 90 + angle;
-            dir="cw";
-            System.out.print("cw ");
+            dir="cw ";
+            //System.out.print("cw ");
         }
 
         if (dXX < 0 && dYY > 0) {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
-            dir="ccw";
-            System.out.print("ccw ");
+            dir="ccw ";
+            //System.out.print("ccw ");
         }
 
         if (dXX < 0 && dYY < 0) {
@@ -465,10 +469,10 @@ public class Main {
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             angle = 180 - angle;
             dir="ccw ";
-            System.out.print("ccw ");
+           // System.out.print("ccw ");
         }
         angle = Double.parseDouble(decimals.format(angle));
-        System.out.print(angle);
+        //System.out.print(angle);
         return dir+angle;
     }
 
