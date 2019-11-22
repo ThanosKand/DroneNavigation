@@ -34,10 +34,10 @@ public class TelloDrone {
 
     public TelloDrone() {
         log("Initializing Drone");
-        File folder = new File("grabbedImages");
-        File[] images = folder.listFiles();
-        Arrays.sort(images);
-        imageCounter = Integer.parseInt(images[images.length-1].getName().substring(0,4));
+        //File folder = new File("grabbedImages");
+        //File[] images = folder.listFiles();
+        //Arrays.sort(images);
+        //imageCounter = Integer.parseInt(images[images.length-1].getName().substring(0,4));
         //System.out.println("imagecounter" + imageCounter);
     }
 
