@@ -229,13 +229,13 @@ public class Main {
 
         for (int i = 0; i < pathArr.length; i++) {
             if (i == pathArr.length - 1) {
-                System.out.println("Check");
+                //System.out.println("Check");
             } else if (i == pathArr.length - 2) {
                 anglesArray[i] = takeAngle(stations, pathArr[i], pathArr[0]);
-                System.out.println(anglesArray[i]);
+                //System.out.println(anglesArray[i]);
             } else {
                 anglesArray[i] = takeAngle(stations, pathArr[i], pathArr[i + 1]);
-                System.out.println(anglesArray[i]);
+                //System.out.println(anglesArray[i]);
             }
         }
 
@@ -291,8 +291,6 @@ public class Main {
             while ((line = bufCommands.readLine()) != null) {
                 // drone.addToCommandQueue(line);
                 drone.sendCommand(line);
-
-
                 System.out.println(line);
             }
             // drone.addToCommandQueue("land");
@@ -458,7 +456,7 @@ public class Main {
             if (stations[to].getY() < stations[from].getY()) {
                 angle = 180.0;
             } else if (stations[to].getY() > stations[from].getY()) {
-                angle = 0;
+                angle = 0.0;
             }
             dir = "cw ";
             // System.out.print(angle);
@@ -532,23 +530,29 @@ public class Main {
         double fromDouble = Double.parseDouble(fromSpli[1]);
         double toDouble = Double.parseDouble(toSpli[1]);
 
+        DecimalFormat decimalCut = new DecimalFormat("#.##");
+        decimalCut.setRoundingMode(RoundingMode.CEILING);
+
         if (fromSpli[0].equals("cw") && toSpli[0].equals("ccw")) {
-            newAngle = "ccw " + (fromDouble + toDouble);
+            newAngle = "ccw " + decimalCut.format((fromDouble + toDouble));
         } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
-            newAngle = "cw " + (fromDouble + toDouble);
+            newAngle = "cw " + decimalCut.format((fromDouble + toDouble));
         } else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
             if(fromDouble<toDouble){
-                newAngle = "cw " + abs(fromDouble - toDouble);
+                newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             }else if(fromDouble>toDouble){
-                newAngle = "ccw " + abs(fromDouble - toDouble);
+                newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             }
         } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
             if (fromDouble < toDouble) {
-                newAngle = "ccw " + abs(fromDouble - toDouble);
+                newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             }else if (fromDouble > toDouble){
-                newAngle = "cw " + abs(fromDouble - toDouble);
+                newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             }
         }
+
+
+
         return newAngle;
     }
 
