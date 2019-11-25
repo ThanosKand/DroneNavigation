@@ -300,7 +300,7 @@ public class Main {
         // BufferedReader bufCommands = new BufferedReader(readCommands);
 
         //int missionPad=1;
-        int CommandLength=(pathArr.length)*2 ;
+        //int CommandLength=(pathArr.length)*2 ;
         int counter=1;
 
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
@@ -312,7 +312,7 @@ public class Main {
                     drone.sendCommand(line);
                 }
 
-                if ((CommandLength % counter) == 0){
+                if (counter % 2 == 0){
                     drone.sendCommand("mon");
                     drone.sendCommand("go 0 0 100 20 m-2");
                     drone.sendCommand("moff");
