@@ -52,13 +52,13 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-        Station s0 = new Station(0, 0);
-        Station s1 = new Station(4, 3);
-        Station s2 = new Station(4, 2);
-        Station s3 = new Station(1, 3);
-        Station s4 = new Station(1, 1);
-        Station s5 = new Station(5, 4);
-        Station s6 = new Station(5, 0);
+        Station s0 = new Station(2.70, 2.35);
+        Station s1 = new Station(1.60, 0.12);
+        Station s2 = new Station(0.34, 2.6);
+        Station s3 = new Station(2.61, 3.43);
+        Station s4 = new Station(0.09, 0.20);
+        Station s5 = new Station(1.10, 3.78);
+        Station s6 = new Station(0.87, 1.16);
 
         Station[] stations = new Station[7];
         stations[0] = s0;
@@ -199,9 +199,7 @@ public class Main {
             FinalPAth = FinalPAth + stationsToVisit.get(PathReferToMatrix[i]);
         }
 
-
         System.out.println("Final path referring to actual stations: " + FinalPAth);
-
 
         int[] pathArr = new int[numberOfStations + 1];
         //System.out.println("Write acquired path to an array");
@@ -248,12 +246,12 @@ public class Main {
             } else if (i == pathArr.length - 2) {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station 0 -> ");
                 System.out.print("We are heading back home: ");
-               // double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
-               // double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
-               // String di=df.format(dis);
+                // double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
+                // double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
+                // String di=df.format(dis);
                 //int di = (int) calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY());
-                double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
-                int di=(int) dis;
+                double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY()) * 100;
+                int di = (int) dis;
 
                 //System.out.print("Turn " + takeAngle(stations, pathArr[i], pathArr[0]));
                 // takeAngle(stations, pathArr[i], pathArr[0]);
@@ -269,7 +267,7 @@ public class Main {
                 //double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
                 //String di=df.format(dis);
 
-                double dis = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())))*100;
+                double dis = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY()))) * 100;
                 int di = (int) dis;
 
                 //double di = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i+1]].getX(), stations[pathArr[i+1]].getY())*100;
@@ -301,13 +299,38 @@ public class Main {
         //FileReader readCommands = new FileReader("DroneCommands.txt");
         // BufferedReader bufCommands = new BufferedReader(readCommands);
 
+        //int missionPad=1;
+        int CommandLength=(pathArr.length)*2 ;
+        int counter=1;
+
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
             String line;
             drone.sendCommand("takeoff");
             while ((line = bufCommands.readLine()) != null) {
-                // drone.addToCommandQueue(line);
-                drone.sendCommand(line);
-                System.out.println(line);
+
+                while(!drone.sendCommand(line)){
+                    drone.sendCommand(line);
+                }
+
+                if ((CommandLength % counter) == 0){
+                    drone.sendCommand("mon");
+                    drone.sendCommand("go 0 0 100 20 m-2");
+                    drone.sendCommand("moff");
+                }
+                counter++;
+
+              /*  drone.sendCommand("mon");
+                drone.sendCommand("go 0 0 200 m-2");
+                drone.sendCommand("moff");
+
+               */
+
+                //while(!drone.sendCommand("cw 360")){
+                   // drone.sendCommand("cw 360");
+                //}
+
+               // drone.sendCommand("cw 360");
+                //System.out.println(line);
 
 
                 //!!!! After every 'forward' command --> search for mission-pads and orientate accordingly !!!!
@@ -477,12 +500,10 @@ public class Main {
                 angle = 180.0;
                 // angle=180;
             } else if (stations[to].getY() > stations[from].getY()) {
-                //angle = 0.0;
-                angle = 0;
+                angle = 0.0;
+                //angle = 0;
             }
             dir = "cw ";
-            // System.out.print(angle);
-            //return "cw "+angle;
         }
 
         if (dYY == 0) {
@@ -495,11 +516,7 @@ public class Main {
                 angle = 90.0;
                 // angle = 90;
                 dir = "cw ";
-                //System.out.print("cw ");
-
             }
-            //System.out.print(angle);
-            // dir+angle;
         }
 
         if (dXX > 0 && dYY > 0) {
@@ -507,9 +524,7 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             //angle = (int) Math.toDegrees(Math.atan2(dXX, dYY));
-
             dir = "cw ";
-
         }
 
         if (dXX > 0 && dYY < 0) {
@@ -517,7 +532,7 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dYY, dXX));
             //angle = (int) Math.toDegrees(Math.atan2(dYY, dXX));
-            angle = 90 + angle;
+            angle = 90.0 + angle;
             dir = "cw ";
         }
 
@@ -534,7 +549,7 @@ public class Main {
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
             //angle = (int) Math.toDegrees(Math.atan2(dXX, dYY));
-            angle = 180 - angle;
+            angle = 180.0 - angle;
             dir = "ccw ";
 
         }
@@ -555,10 +570,8 @@ public class Main {
         double fromDouble = Double.parseDouble(fromSpli[1]);
         double toDouble = Double.parseDouble(toSpli[1]);
 
-
         /*int fromDouble = Integer.parseInt(fromSpli[1]);
         int toDouble = Integer.parseInt(toSpli[1]);
-
          */
 
         DecimalFormat decimalCut = new DecimalFormat("#.##");
