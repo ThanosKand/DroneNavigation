@@ -1,17 +1,17 @@
 public class Station {
-    int x;
-    int y;
+    double x;
+    double y;
 
-    public Station(int x, int y){
+    public Station(double x, double y){
         this.x=x;
         this.y=y;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 

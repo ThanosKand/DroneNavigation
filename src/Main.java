@@ -248,7 +248,13 @@ public class Main {
             } else if (i == pathArr.length - 2) {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station 0 -> ");
                 System.out.print("We are heading back home: ");
-                double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
+               // double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())));
+               // double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
+               // String di=df.format(dis);
+                //int di = (int) calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY());
+                double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
+                int di=(int) dis;
+
                 //System.out.print("Turn " + takeAngle(stations, pathArr[i], pathArr[0]));
                 // takeAngle(stations, pathArr[i], pathArr[0]);
                 //commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[0]));
@@ -259,10 +265,19 @@ public class Main {
                 //System.out.println(getDifferenceInAngles(anglesArray)[i]);
             } else {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station " + pathArr[i + 1] + " -> ");
-                double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
+                //double di = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())));
+                //double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY())*100;
+                //String di=df.format(dis);
+
+                double dis = Double.parseDouble(df.format(calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i + 1]].getX(), stations[pathArr[i + 1]].getY())))*100;
+                int di = (int) dis;
+
+                //double di = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[i+1]].getX(), stations[pathArr[i+1]].getY())*100;
+                //int dis=(int) di;
+
                 if (i == 0) {
                     System.out.print("Turn " + takeAngle(stations, pathArr[i], pathArr[i + 1]));
-                    takeAngle(stations, pathArr[i], pathArr[i + 1]);
+                    //takeAngle(stations, pathArr[i], pathArr[i + 1]);
                     commandsWriter.println(takeAngle(stations, pathArr[i], pathArr[i + 1]));
                 } else {
                     System.out.print("Turn " + getDifferenceInAngles(anglesArray, i));
@@ -278,6 +293,7 @@ public class Main {
 
 
         TelloDrone drone = new TelloDrone();
+        drone.connect();
 
         //drone.setLogToConsole(true);
         // drone.connect();
@@ -287,20 +303,23 @@ public class Main {
 
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
             String line;
-            //drone.addToCommandQueue("takeoff");
+            drone.sendCommand("takeoff");
             while ((line = bufCommands.readLine()) != null) {
                 // drone.addToCommandQueue(line);
                 drone.sendCommand(line);
                 System.out.println(line);
+
+
+                //!!!! After every 'forward' command --> search for mission-pads and orientate accordingly !!!!
             }
-            // drone.addToCommandQueue("land");
+            drone.sendCommand("land");
         }
 
         // drone.startCommandQueue();
 
     }
 
-    public static double calculateDistance(int x1, int y1, int x2, int y2) {
+    public static double calculateDistance(double x1, double y1, double x2, double y2) { //Check the Earth's radius for outdoors (For the Discussion)
         double distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         return distance;
     }
@@ -444,6 +463,7 @@ public class Main {
     public static String takeAngle(Station[] stations, int from, int to) {
 
         double angle = 0.0;
+        //int angle=0;
         String dir = "";
 
         double dXX = stations[to].getX() - stations[from].getX();
@@ -455,8 +475,10 @@ public class Main {
         if (dXX == 0) {
             if (stations[to].getY() < stations[from].getY()) {
                 angle = 180.0;
+                // angle=180;
             } else if (stations[to].getY() > stations[from].getY()) {
-                angle = 0.0;
+                //angle = 0.0;
+                angle = 0;
             }
             dir = "cw ";
             // System.out.print(angle);
@@ -466,10 +488,12 @@ public class Main {
         if (dYY == 0) {
             if (stations[to].getX() < stations[from].getX()) {
                 angle = 90.0;
+                //angle = 90;
                 dir = "ccw ";
                 // System.out.print("ccw ");
             } else if (stations[to].getX() > stations[from].getX()) {
                 angle = 90.0;
+                // angle = 90;
                 dir = "cw ";
                 //System.out.print("cw ");
 
@@ -482,38 +506,39 @@ public class Main {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
-            // angle = 90 - angle;
+            //angle = (int) Math.toDegrees(Math.atan2(dXX, dYY));
+
             dir = "cw ";
-            //System.out.print("cw ");
+
         }
 
         if (dXX > 0 && dYY < 0) {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dYY, dXX));
+            //angle = (int) Math.toDegrees(Math.atan2(dYY, dXX));
             angle = 90 + angle;
             dir = "cw ";
-            //System.out.print("cw ");
         }
 
         if (dXX < 0 && dYY > 0) {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
+            //angle = (int) Math.toDegrees(Math.atan2(dXX, dYY));
             dir = "ccw ";
-            //System.out.print("ccw ");
         }
 
         if (dXX < 0 && dYY < 0) {
             dXX = abs(stations[to].getX() - stations[from].getX());
             dYY = abs(stations[to].getY() - stations[from].getY());
             angle = Math.toDegrees(Math.atan2(dXX, dYY));
+            //angle = (int) Math.toDegrees(Math.atan2(dXX, dYY));
             angle = 180 - angle;
             dir = "ccw ";
-            // System.out.print("ccw ");
+
         }
         angle = Double.parseDouble(decimals.format(angle));
-        //System.out.print(angle);
         return dir + angle;
     }
 
@@ -530,6 +555,12 @@ public class Main {
         double fromDouble = Double.parseDouble(fromSpli[1]);
         double toDouble = Double.parseDouble(toSpli[1]);
 
+
+        /*int fromDouble = Integer.parseInt(fromSpli[1]);
+        int toDouble = Integer.parseInt(toSpli[1]);
+
+         */
+
         DecimalFormat decimalCut = new DecimalFormat("#.##");
         decimalCut.setRoundingMode(RoundingMode.CEILING);
 
@@ -538,23 +569,40 @@ public class Main {
         } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
             newAngle = "cw " + decimalCut.format((fromDouble + toDouble));
         } else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
-            if(fromDouble<toDouble){
+            if (fromDouble < toDouble) {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
-            }else if(fromDouble>toDouble){
+            } else if (fromDouble > toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             }
         } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
             if (fromDouble < toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
-            }else if (fromDouble > toDouble){
+            } else if (fromDouble > toDouble) {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             }
         }
 
 
 
+       /* if (fromSpli[0].equals("cw") && toSpli[0].equals("ccw")) {
+            newAngle = "ccw " + (fromDouble + toDouble);
+        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
+            newAngle = "cw " + (fromDouble + toDouble);
+        } else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
+            if (fromDouble < toDouble) {
+                newAngle = "cw " + abs(fromDouble - toDouble);
+            } else if (fromDouble > toDouble) {
+                newAngle = "ccw " + abs(fromDouble - toDouble);
+            }
+        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
+            if (fromDouble < toDouble) {
+                newAngle = "ccw " + abs(fromDouble - toDouble);
+            } else if (fromDouble > toDouble) {
+                newAngle = "cw " + abs(fromDouble - toDouble);
+            }
+        }
+        */
         return newAngle;
     }
-
-
 }
+
