@@ -298,7 +298,8 @@ public class Main {
         // BufferedReader bufCommands = new BufferedReader(readCommands);
 
         //int missionPad=1;
-        //int CommandLength=(pathArr.length)*2 ;
+        int CommandLength=(numberOfStations)*2 ;
+        System.out.println(CommandLength);
         int counter=1;
 
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
@@ -317,8 +318,10 @@ public class Main {
                    while(!drone.sendCommand("go 0 0 50 20 m-2")){
                        drone.sendCommand("go 0 0 50 20 m-2");
                    }
-                   while(!drone.sendCommand("up 100")){
-                       drone.sendCommand("up 100");
+                   if (counter!=CommandLength) {
+                       while (!drone.sendCommand("up 100")) {
+                           drone.sendCommand("up 100");
+                       }
                    }
                     drone.sendCommand("moff");
                 }
