@@ -52,13 +52,13 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-        Station s0 = new Station(2.70, 2.35);
-        Station s1 = new Station(1.60, 0.12);
-        Station s2 = new Station(0.34, 2.6);
-        Station s3 = new Station(2.61, 3.43);
-        Station s4 = new Station(0.09, 0.20);
-        Station s5 = new Station(1.10, 3.78);
-        Station s6 = new Station(0.87, 1.16);
+        Station s0 = new Station(0, 0);
+        Station s1 = new Station(4, 3);
+        Station s2 = new Station(4, 2);
+        Station s3 = new Station(1, 3);
+        Station s4 = new Station(1, 1);
+        Station s5 = new Station(5, 4);
+        Station s6 = new Station(5, 0);
 
         Station[] stations = new Station[7];
         stations[0] = s0;
@@ -103,7 +103,6 @@ public class Main {
 
        /* Iterator i = stationsToVisit.iterator();
         while (stationsToVisit.hasNext())
-
         */
 
         PrintWriter writer = new PrintWriter("DistancesMatrix.txt", StandardCharsets.UTF_8);
@@ -127,7 +126,6 @@ public class Main {
         System.out.println();
 
         */
-
 
         // The path to the files with the distances is asked
         // Scanner input = new Scanner(System.in);
@@ -306,18 +304,27 @@ public class Main {
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
             String line;
             drone.sendCommand("takeoff");
+            drone.sendCommand("up 50");
+            // Go up 200, so the drone can scan for the pads --> go down to 50 when it finds the pad --> go back up to 200 when it flies to the next pad
             while ((line = bufCommands.readLine()) != null) {
 
                 while(!drone.sendCommand(line)){
                     drone.sendCommand(line);
                 }
 
-                if (counter % 2 == 0){
+                if (counter % 2 == 0){ // check if the drone rotates!!!
                     drone.sendCommand("mon");
-                    drone.sendCommand("go 0 0 100 20 m-2");
+                   while(!drone.sendCommand("go 0 0 50 20 m-2")){
+                       drone.sendCommand("go 0 0 50 20 m-2");
+                   }
+                   while(!drone.sendCommand("up 100")){
+                       drone.sendCommand("up 100");
+                   }
                     drone.sendCommand("moff");
                 }
                 counter++;
+
+
 
               /*  drone.sendCommand("mon");
                 drone.sendCommand("go 0 0 200 m-2");

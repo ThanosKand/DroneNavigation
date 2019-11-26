@@ -1,8 +1,6 @@
-ccw 153.75
-forward 248
-cw 126.81
-forward 278
-cw 59.74
-forward 140
-cw 99
-forward 214
+cw 45.0
+forward 141
+ccw 45
+forward 200
+ccw 161.57
+forward 316
