@@ -30,9 +30,8 @@ import static java.lang.Math.atan2;
  * 3) Calculate the cost of visiting "initial" (costCurrentNode) + cost of visiting the rest from it ("costChildren")
  * 4) Return the minimum result from step 3
  * <p>
- * https://github.com/Sinclert/Heuristics-TSP/blob/master/HK_Optimal.java
+ https://github.com/Sinclert/Heuristics-TSP/blob/master/HK_Optimal.java
  */
-
 public class Main {
 
 
