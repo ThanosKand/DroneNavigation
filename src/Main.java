@@ -51,13 +51,13 @@ public class Main {
 
         Scanner in = new Scanner(System.in);
 
-        Station s0 = new Station(0, 0);
-        Station s1 = new Station(4, 3);
-        Station s2 = new Station(4, 2);
+        Station s0 = new Station(0,0);
+        Station s1 = new Station(1.60, 0.12);
+        Station s2 = new Station(2, 2);
         Station s3 = new Station(1, 3);
         Station s4 = new Station(1, 1);
-        Station s5 = new Station(5, 4);
-        Station s6 = new Station(5, 0);
+        Station s5 = new Station(1.10, 3.78);
+        Station s6 = new Station(0.87, 1.16);
 
         Station[] stations = new Station[7];
         stations[0] = s0;
@@ -304,7 +304,10 @@ public class Main {
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {
             String line;
             drone.sendCommand("takeoff");
-            drone.sendCommand("up 50");
+
+            while(!drone.sendCommand("up 110")){
+                drone.sendCommand("up 110");
+            }
             // Go up 200, so the drone can scan for the pads --> go down to 50 when it finds the pad --> go back up to 200 when it flies to the next pad
             while ((line = bufCommands.readLine()) != null) {
 
@@ -314,15 +317,17 @@ public class Main {
 
                 if (counter % 2 == 0){ // check if the drone rotates!!!
                     drone.sendCommand("mon");
-                   while(!drone.sendCommand("go 0 0 50 20 m-2")){
-                       drone.sendCommand("go 0 0 50 20 m-2");
-                   }
-                   if (counter!=CommandLength) {
-                       while (!drone.sendCommand("up 100")) {
-                           drone.sendCommand("up 100");
-                       }
+                   while(!drone.sendCommand("go 0 0 80 20 m-2")){
+                       drone.sendCommand("go 0 0 80 20 m-2");
                    }
                     drone.sendCommand("moff");
+
+                   if (counter!=CommandLength) {
+                       while (!drone.sendCommand("up 110")) {
+                           drone.sendCommand("up 110");
+                       }
+                   }
+
                 }
                 counter++;
 
@@ -595,12 +600,16 @@ public class Main {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
+            }else if(fromDouble==toDouble){
+                newAngle= "cw 0.0";
             }
         } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
             if (fromDouble < toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
+            }else if(fromDouble==toDouble){
+                newAngle= "cw 0.0";
             }
         }
 
