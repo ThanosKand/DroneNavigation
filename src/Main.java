@@ -75,7 +75,7 @@ public class Main {
         // FIRST CALL TO THE RECURSIVE FUNCTION
         procedure(0, vertices, path, 0.0);
 
-        System.out.println("Path referring to matrix: " + optimalPath + ". Distance = " + optimalDistance);
+        System.out.println("Path referring to the matrix: " + optimalPath + ". Distance = " + optimalDistance);
 
         int[] pathReferToStations = takePathReferToStations(optimalPath, stationsToVisit, numberOfStations);
 
@@ -247,7 +247,7 @@ public class Main {
                 System.out.println("We did it!");
             } else if (i == pathArr.length - 2) {
                 System.out.print("Travel from station " + pathArr[i] + " to " + "station 0 -> ");
-                System.out.print("We are heading back home: ");
+                System.out.print("We are heading back to the Control Station: ");
                 double dis = calculateDistance(stations[pathArr[i]].getX(), stations[pathArr[i]].getY(), stations[pathArr[0]].getX(), stations[pathArr[0]].getY()) * 100;
                 int di = (int) dis;
                 System.out.print("Turn " + getDifferenceInAngles(anglesArray, i));
