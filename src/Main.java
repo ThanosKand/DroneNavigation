@@ -5,12 +5,9 @@ import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Iterator;
 import java.util.Scanner;
 
 import static java.lang.Math.abs;
-import static java.lang.Math.atan2;
 
 /**
  * The Held Karp algorithm:
@@ -81,15 +78,15 @@ public class Main {
 
         System.out.println();
 
-        String[] anglesArray = createArrayOfAnglesToTheNextStation(pathReferToStations, stations);
+        String[] anglesArray = createArrayOfAngles(pathReferToStations, stations);
 
-        calculateTrip(pathReferToStations, stations, anglesArray);
+        printWriteTrip(pathReferToStations, stations, anglesArray);
 
         controlDrone(numberOfStations);
 
     }
 
-    public static Station[] createStations() {
+    private static Station[] createStations() {
 
         Station s0 = new Station(2.70, 2.35);
         Station s1 = new Station(1.60, 0.12);
@@ -111,7 +108,7 @@ public class Main {
         return stations;
     }
 
-    public static ArrayList<Integer> takeStationsToVisit(int numberOfStations){
+    private static ArrayList<Integer> takeStationsToVisit(int numberOfStations){
         Scanner in= new Scanner(System.in);
 
         System.out.println("Which stations do you want to visit?");
@@ -124,12 +121,12 @@ public class Main {
         return stationsToVisit;
     }
 
-    public static double calculateDistance(double x1, double y1, double x2, double y2) { //Check the Earth's radius for outdoors (For the Discussion)
+    private static double calculateDistance(double x1, double y1, double x2, double y2) { //Check the Earth's radius for outdoors (For the Discussion)
         double distance = Math.sqrt(Math.pow((x2 - x1), 2) + Math.pow((y2 - y1), 2));
         return distance;
     }
 
-    public static double[][] createMatrixWithDistances(ArrayList<Integer> stationsToVisit, Station[] stations, int numberOfStations) {
+    private static double[][] createMatrixWithDistances(ArrayList<Integer> stationsToVisit, Station[] stations, int numberOfStations) {
 
         double[][] matrix = new double[numberOfStations][numberOfStations];
 
@@ -152,7 +149,7 @@ public class Main {
     }
 
 
-    public static void createFileWithDistances(double[][] matrix, int numberOfStations) throws IOException {
+    private static void createFileWithDistances(double[][] matrix, int numberOfStations) throws IOException {
 
         PrintWriter writer = new PrintWriter("DistancesMatrix.txt", StandardCharsets.UTF_8);
 
@@ -165,7 +162,7 @@ public class Main {
         writer.close();
     }
 
-    public static void fillMatrixDistances(int numberOfStations) throws IOException {
+    private static void fillMatrixDistances(int numberOfStations) throws IOException {
 
         int size = numberOfStations;
 
@@ -193,7 +190,7 @@ public class Main {
 
     }
 
-    public static int[] takePathReferToStations(String optimalPath, ArrayList<Integer> stationsToVisit, int numberOfStations) {
+    private static int[] takePathReferToStations(String optimalPath, ArrayList<Integer> stationsToVisit, int numberOfStations) {
         // Creating array of string length
         int[] PathReferToMatrix = new int[optimalPath.length()];
 
@@ -220,7 +217,7 @@ public class Main {
 
     }
 
-    public static String[] createArrayOfAnglesToTheNextStation(int[] pathArr, Station[] stations) {
+    private static String[] createArrayOfAngles(int[] pathArr, Station[] stations) {
 
         String[] anglesArray = new String[pathArr.length];
 
@@ -236,7 +233,7 @@ public class Main {
         return anglesArray;
     }
 
-    public static void calculateTrip(int[] pathArr, Station[] stations, String[] anglesArray) throws IOException {
+    private static void printWriteTrip(int[] pathArr, Station[] stations, String[] anglesArray) throws IOException {
 
         PrintWriter commandsWriter = new PrintWriter("DroneCommands.txt", StandardCharsets.UTF_8);
         DecimalFormat df = new DecimalFormat("#.###");
@@ -276,7 +273,7 @@ public class Main {
         commandsWriter.close();
     }
 
-    public static void controlDrone(int numberOfStations) throws IOException {
+    private static void controlDrone(int numberOfStations) throws IOException {
 
         TelloDrone drone = new TelloDrone();
         drone.connect();
@@ -319,18 +316,18 @@ public class Main {
         }
     }
 
-    public static String takeAngle(Station[] stations, int from, int to) {
+    private static String takeAngle(Station[] stations, int from, int to) {
 
         double angle = 0.0;
         String dir = "";
 
-        double dXX = stations[to].getX() - stations[from].getX();
-        double dYY = stations[to].getY() - stations[from].getY();
+        double dX = stations[to].getX() - stations[from].getX();
+        double dY = stations[to].getY() - stations[from].getY();
 
         DecimalFormat decimals = new DecimalFormat("#.##");
         decimals.setRoundingMode(RoundingMode.CEILING);
 
-        if (dXX == 0) {
+        if (dX == 0) {
             if (stations[to].getY() < stations[from].getY()) {
                 angle = 180.0;
             } else if (stations[to].getY() > stations[from].getY()) {
@@ -339,7 +336,7 @@ public class Main {
             dir = "cw ";
         }
 
-        if (dYY == 0) {
+        if (dY == 0) {
             if (stations[to].getX() < stations[from].getX()) {
                 angle = 90.0;
                 dir = "ccw ";
@@ -349,32 +346,32 @@ public class Main {
             }
         }
 
-        if (dXX > 0 && dYY > 0) {
-            dXX = abs(stations[to].getX() - stations[from].getX());
-            dYY = abs(stations[to].getY() - stations[from].getY());
-            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+        if (dX > 0 && dY > 0) {
+            dX = abs(stations[to].getX() - stations[from].getX());
+            dY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dX, dY));
             dir = "cw ";
         }
 
-        if (dXX > 0 && dYY < 0) {
-            dXX = abs(stations[to].getX() - stations[from].getX());
-            dYY = abs(stations[to].getY() - stations[from].getY());
-            angle = Math.toDegrees(Math.atan2(dYY, dXX));
+        if (dX > 0 && dY < 0) {
+            dX = abs(stations[to].getX() - stations[from].getX());
+            dY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dY, dX));
             angle = 90.0 + angle;
             dir = "cw ";
         }
 
-        if (dXX < 0 && dYY > 0) {
-            dXX = abs(stations[to].getX() - stations[from].getX());
-            dYY = abs(stations[to].getY() - stations[from].getY());
-            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+        if (dX < 0 && dY > 0) {
+            dX = abs(stations[to].getX() - stations[from].getX());
+            dY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dX, dY));
             dir = "ccw ";
         }
 
-        if (dXX < 0 && dYY < 0) {
-            dXX = abs(stations[to].getX() - stations[from].getX());
-            dYY = abs(stations[to].getY() - stations[from].getY());
-            angle = Math.toDegrees(Math.atan2(dXX, dYY));
+        if (dX < 0 && dY < 0) {
+            dX = abs(stations[to].getX() - stations[from].getX());
+            dY = abs(stations[to].getY() - stations[from].getY());
+            angle = Math.toDegrees(Math.atan2(dX, dY));
             angle = 180.0 - angle;
             dir = "ccw ";
 
@@ -383,10 +380,9 @@ public class Main {
         return dir + angle;
     }
 
-    public static String getDifferenceInAngles(String[] anglesArray, int iter) {
+    private static String getDifferenceInAngles(String[] anglesArray, int iter) {
 
         String newAngle = "";
-
 
         String from = anglesArray[iter - 1];
         String[] fromSpli = from.split("\\s+");

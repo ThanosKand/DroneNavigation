@@ -1,17 +1,17 @@
-public class Station {
-    double x;
-    double y;
+class Station {
+    private double x;
+    private double y;
 
-    public Station(double x, double y){
+    Station(double x, double y){
         this.x=x;
         this.y=y;
     }
 
-    public double getX() {
+    double getX() {
         return x;
     }
 
-    public double getY() {
+    double getY() {
         return y;
     }
 
