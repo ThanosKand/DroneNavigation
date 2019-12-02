@@ -73,7 +73,7 @@ public class Main {
         // FIRST CALL TO THE RECURSIVE FUNCTION
         procedure(0, vertices, path, 0.0);
 
-        System.out.println("Path referring to the matrix: " + optimalPath + ". Distance = " + optimalDistance);
+        System.out.println("Path referring to the matrix: " + optimalPath);
 
         int[] pathReferToStations = takePathReferToStations(optimalPath, stationsToVisit, numberOfStations);
 
@@ -284,7 +284,6 @@ public class Main {
         drone.connect();
 
         int CommandLength = (numberOfStations) * 2;
-        System.out.println(CommandLength);
         int counter = 1;
 
         try (BufferedReader bufCommands = new BufferedReader(new FileReader("DroneCommands.txt"))) {

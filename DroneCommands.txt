@@ -4,5 +4,7 @@ cw 126.81
 forward 278
 cw 59.74
 forward 140
-cw 99
-forward 214
+cw 70.28
+forward 155
+cw 72.18
+forward 108
