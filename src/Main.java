@@ -49,9 +49,13 @@ public class Main {
 
         System.out.println("How many stations do you want to visit?");
         int numberOfStations = in.nextInt();
-        //numberOfStations += 1;
+
 
         ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations);
+
+        //System.out.println(stationsToVisit.size());
+
+        numberOfStations += 1;
 
         double[][] matrix = createMatrixWithDistances(stationsToVisit, stations, numberOfStations);
         createFileWithDistances(matrix, numberOfStations);
@@ -89,13 +93,23 @@ public class Main {
 
     private static Station[] createStations() {
 
-        Station s0 = new Station(2.70, 2.35);
+       /* Station s0 = new Station(2.70, 2.35);
         Station s1 = new Station(1.60, 0.12);
         Station s2 = new Station(0.34, 2.60);
         Station s3 = new Station(2.61, 3.43);
         Station s4 = new Station(0.09, 0.20);
         Station s5 = new Station(1.10, 3.78);
         Station s6 = new Station(0.87, 1.16);
+
+        */
+
+        Station s0 = new Station(0, 0);
+        Station s1 = new Station(4, 3);
+        Station s2 = new Station(4, 2);
+        Station s3 = new Station(1, 3);
+        Station s4 = new Station(1, 1);
+        Station s5 = new Station(5, 4);
+        Station s6 = new Station(5, 0);
 
         Station[] stations = new Station[7];
         stations[0] = s0;
@@ -115,7 +129,7 @@ public class Main {
         System.out.println("Which stations do you want to visit?");
         ArrayList<Integer> stationsToVisit = new ArrayList<>();
 
-       // stationsToVisit.add(0);
+       stationsToVisit.add(0);
 
         for (int i = 0; i < numberOfStations; i++) {
 
@@ -401,9 +415,13 @@ public class Main {
 
         if (fromSpli[0].equals("cw") && toSpli[0].equals("ccw")) {
             newAngle = "ccw " + decimalCut.format((fromDouble + toDouble));
-        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
+        }
+
+        else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
             newAngle = "cw " + decimalCut.format((fromDouble + toDouble));
-        } else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
+        }
+
+        else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
             if (fromDouble < toDouble) {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
@@ -411,7 +429,9 @@ public class Main {
             } else if (fromDouble == toDouble) {
                 newAngle = "cw 0.0";
             }
-        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
+        }
+
+        else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
             if (fromDouble < toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
