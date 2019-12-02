@@ -49,6 +49,7 @@ public class Main {
 
         System.out.println("How many stations do you want to visit?");
         int numberOfStations = in.nextInt();
+        //numberOfStations += 1;
 
         ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations);
 
@@ -114,8 +115,12 @@ public class Main {
         System.out.println("Which stations do you want to visit?");
         ArrayList<Integer> stationsToVisit = new ArrayList<>();
 
+       // stationsToVisit.add(0);
+
         for (int i = 0; i < numberOfStations; i++) {
+
             stationsToVisit.add(in.nextInt());
+
         }
 
         return stationsToVisit;
