@@ -93,7 +93,8 @@ public class Main {
 
     private static Station[] createStations() {
 
-       /* Station s0 = new Station(2.70, 2.35);
+
+        Station s0 = new Station(2.70, 2.35);
         Station s1 = new Station(1.60, 0.12);
         Station s2 = new Station(0.34, 2.60);
         Station s3 = new Station(2.61, 3.43);
@@ -101,8 +102,9 @@ public class Main {
         Station s5 = new Station(1.10, 3.78);
         Station s6 = new Station(0.87, 1.16);
 
-        */
 
+
+/*
         Station s0 = new Station(0, 0);
         Station s1 = new Station(4, 3);
         Station s2 = new Station(4, 2);
@@ -110,6 +112,10 @@ public class Main {
         Station s4 = new Station(1, 1);
         Station s5 = new Station(5, 4);
         Station s6 = new Station(5, 0);
+
+ */
+
+
 
         Station[] stations = new Station[7];
         stations[0] = s0;
