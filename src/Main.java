@@ -1,5 +1,3 @@
-/* Author: Sinclert Perez (UC3M) */
-
 import java.io.*;
 import java.math.RoundingMode;
 import java.nio.charset.StandardCharsets;
@@ -9,26 +7,6 @@ import java.util.Scanner;
 
 import static java.lang.Math.abs;
 
-/**
- * The Held Karp algorithm:
- * <p>
- * There are 2 possible cases in each iteration:
- * <p>
- * A) A base case where we already know the answer. (Stopping condition)
- * B) Decreasing the number of considered vertices and calling our algorithm again. (Recursion)
- * <p>
- * Explanation of every case:
- * <p>
- * A) If the list of vertices is empty, return the distance between starting point and vertex.
- * B) If the list of vertices is not empty, lets decrease our problem space:
- * <p>
- * 1) Consider each vertex in vertices as a starting point ("initial")
- * 2) As "initial" is the starting point, we have to remove it from the list of vertices
- * 3) Calculate the cost of visiting "initial" (costCurrentNode) + cost of visiting the rest from it ("costChildren")
- * 4) Return the minimum result from step 3
- * <p>
- * https://github.com/Sinclert/Heuristics-TSP/blob/master/HK_Optimal.java
- */
 public class Main {
 
     /* ----------------------------- GLOBAL VARIABLES ------------------------------ */
@@ -52,8 +30,6 @@ public class Main {
 
 
         ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations);
-
-        //System.out.println(stationsToVisit.size());
 
         numberOfStations += 1;
 
@@ -93,7 +69,6 @@ public class Main {
 
     private static Station[] createStations() {
 
-
         Station s0 = new Station(2.70, 2.35);
         Station s1 = new Station(1.60, 0.12);
         Station s2 = new Station(0.34, 2.60);
@@ -101,8 +76,6 @@ public class Main {
         Station s4 = new Station(0.09, 0.20);
         Station s5 = new Station(1.10, 3.78);
         Station s6 = new Station(0.87, 1.16);
-
-
 
 /*
         Station s0 = new Station(0, 0);
@@ -114,8 +87,6 @@ public class Main {
         Station s6 = new Station(5, 0);
 
  */
-
-
 
         Station[] stations = new Station[7];
         stations[0] = s0;
@@ -450,6 +421,9 @@ public class Main {
     }
 
     /* ------------------------------- RECURSIVE FUNCTION ---------------------------- */
+    /* Author: Sinclert Perez (UC3M)
+     * https://github.com/Sinclert/Heuristics-TSP/blob/master/HK_Optimal.java
+     */
 
     private static double procedure(int initial, int vertices[], String path, double costUntilHere) {
 
