@@ -29,7 +29,7 @@ public class Main {
         int numberOfStations = in.nextInt();
 
 
-        ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations);
+        ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations, stations);
 
         numberOfStations += 1;
 
@@ -100,7 +100,7 @@ public class Main {
         return stations;
     }
 
-    private static ArrayList<Integer> takeStationsToVisit(int numberOfStations){
+    private static ArrayList<Integer> takeStationsToVisit(int numberOfStations, Station[] stations){
         Scanner in= new Scanner(System.in);
 
         System.out.println("Which stations do you want to visit?");
@@ -110,8 +110,12 @@ public class Main {
 
         for (int i = 0; i < numberOfStations; i++) {
 
-            stationsToVisit.add(in.nextInt());
-
+            int stationInput= in.nextInt();
+            while(stationInput> stations.length-1){
+                System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length-1)+ ":");
+                stationInput= in.nextInt();
+            }
+            stationsToVisit.add(stationInput);
         }
 
         return stationsToVisit;

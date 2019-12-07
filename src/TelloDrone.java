@@ -5,7 +5,7 @@ import java.time.format.DateTimeFormatter;
 
 /**
  * @author Ebbe Vang
-  https://github.com/flexlab-ruc/TelloDroneJavaConnect
+ * https://github.com/flexlab-ruc/TelloDroneJavaConnect
  */
 public class TelloDrone {
 
@@ -57,11 +57,10 @@ public class TelloDrone {
 
     public boolean sendCommand(String command) {
         sendMessage(command);
-        if (ok()){
-            log("command \"" +  command + "\" accepted");
+        if (ok()) {
+            log("command \"" + command + "\" accepted");
             return true;
-        }
-        else{
+        } else {
             log("command \"" + command + "\" failed");
             return false;
         }
@@ -85,5 +84,13 @@ public class TelloDrone {
             System.out.println(message);
 
         }
+    }
+
+    public void setLogToConsole(boolean logToConsole) {
+        this.logToConsole = logToConsole;
+    }
+
+    public boolean isLogToConsole() {
+        return logToConsole;
     }
 }
