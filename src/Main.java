@@ -17,7 +17,7 @@ public class Main {
 
     /* ------------------------------ MAIN FUNCTION -------------------------------- */
 
-    public static void main(String args[]) throws IOException {
+    public static void main(String args[]) throws Exception {
 
         /* ----------------------------- IO MANAGEMENT ----------------------------- */
 
@@ -30,6 +30,13 @@ public class Main {
 
 
         ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations, stations);
+
+       /* System.out.println("Which stations do you want to visit?");
+        ArrayList<Integer> stationsToVisit = new ArrayList<>();
+        stationsToVisit.add(0);
+        stationsToVisit = takeStationsToVisit(stationsToVisit, numberOfStations, stations);
+
+        */
 
         numberOfStations += 1;
 
@@ -100,25 +107,52 @@ public class Main {
         return stations;
     }
 
-    private static ArrayList<Integer> takeStationsToVisit(int numberOfStations, Station[] stations){
-        Scanner in= new Scanner(System.in);
+    private static ArrayList<Integer> takeStationsToVisit(int numberOfStations, Station[] stations) {
+        Scanner in = new Scanner(System.in);
 
         System.out.println("Which stations do you want to visit?");
         ArrayList<Integer> stationsToVisit = new ArrayList<>();
-
-       stationsToVisit.add(0);
+        stationsToVisit.add(0);
 
         for (int i = 0; i < numberOfStations; i++) {
 
-            int stationInput= in.nextInt();
-            while(stationInput> stations.length-1){
-                System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length-1)+ ":");
-                stationInput= in.nextInt();
+            int stationInput = in.nextInt();
+            while (stationInput > stations.length - 1) {
+
+                System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length - 1) + ":");
+                stationInput = in.nextInt();
             }
+
             stationsToVisit.add(stationInput);
         }
 
         return stationsToVisit;
+
+       /* ArrayList<Integer> newStationsToVisit = new ArrayList<>();
+
+        for (int i = 0; i < numberOfStations; i++) {
+            try {
+                System.out.println(i);
+                int stationInput = in.nextInt();
+
+                while (stationInput > stations.length - 1) {
+                    System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length - 1) + ":");
+
+                    stationInput = in.nextInt();
+
+                }
+                newStationsToVisit.add(stationInput);
+
+            } catch (Exception e) {
+                System.out.println("Please, provide a valid station to visit:");
+                takeStationsToVisit(newStationsToVisit, numberOfStations, stations);
+            }
+        }
+
+        return newStationsToVisit;
+
+        */
+
     }
 
     private static double calculateDistance(double x1, double y1, double x2, double y2) { //Check the Earth's radius for outdoors (For the Discussion)
@@ -396,13 +430,9 @@ public class Main {
 
         if (fromSpli[0].equals("cw") && toSpli[0].equals("ccw")) {
             newAngle = "ccw " + decimalCut.format((fromDouble + toDouble));
-        }
-
-        else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
+        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("cw")) {
             newAngle = "cw " + decimalCut.format((fromDouble + toDouble));
-        }
-
-        else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
+        } else if (fromSpli[0].equals("cw") && toSpli[0].equals("cw")) {
             if (fromDouble < toDouble) {
                 newAngle = "cw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
@@ -410,9 +440,7 @@ public class Main {
             } else if (fromDouble == toDouble) {
                 newAngle = "cw 0.0";
             }
-        }
-
-        else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
+        } else if (fromSpli[0].equals("ccw") && toSpli[0].equals("ccw")) {
             if (fromDouble < toDouble) {
                 newAngle = "ccw " + decimalCut.format(abs(fromDouble - toDouble));
             } else if (fromDouble > toDouble) {
