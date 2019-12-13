@@ -31,13 +31,6 @@ public class Main {
 
         ArrayList<Integer> stationsToVisit = takeStationsToVisit(numberOfStations, stations);
 
-       /* System.out.println("Which stations do you want to visit?");
-        ArrayList<Integer> stationsToVisit = new ArrayList<>();
-        stationsToVisit.add(0);
-        stationsToVisit = takeStationsToVisit(stationsToVisit, numberOfStations, stations);
-
-        */
-
         numberOfStations += 1;
 
         double[][] matrix = createMatrixWithDistances(stationsToVisit, stations, numberOfStations);
@@ -84,17 +77,6 @@ public class Main {
         Station s5 = new Station(1.10, 3.78);
         Station s6 = new Station(0.87, 1.16);
 
-/*
-        Station s0 = new Station(0, 0);
-        Station s1 = new Station(4, 3);
-        Station s2 = new Station(4, 2);
-        Station s3 = new Station(1, 3);
-        Station s4 = new Station(1, 1);
-        Station s5 = new Station(5, 4);
-        Station s6 = new Station(5, 0);
-
- */
-
         Station[] stations = new Station[7];
         stations[0] = s0;
         stations[1] = s1;
@@ -109,50 +91,21 @@ public class Main {
 
     private static ArrayList<Integer> takeStationsToVisit(int numberOfStations, Station[] stations) {
         Scanner in = new Scanner(System.in);
-
         System.out.println("Which stations do you want to visit?");
         ArrayList<Integer> stationsToVisit = new ArrayList<>();
         stationsToVisit.add(0);
 
         for (int i = 0; i < numberOfStations; i++) {
-
             int stationInput = in.nextInt();
             while (stationInput > stations.length - 1) {
 
                 System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length - 1) + ":");
                 stationInput = in.nextInt();
             }
-
             stationsToVisit.add(stationInput);
         }
 
         return stationsToVisit;
-
-       /* ArrayList<Integer> newStationsToVisit = new ArrayList<>();
-
-        for (int i = 0; i < numberOfStations; i++) {
-            try {
-                System.out.println(i);
-                int stationInput = in.nextInt();
-
-                while (stationInput > stations.length - 1) {
-                    System.out.println("Please, choose again! The valid range of stations is between 1 and " + (stations.length - 1) + ":");
-
-                    stationInput = in.nextInt();
-
-                }
-                newStationsToVisit.add(stationInput);
-
-            } catch (Exception e) {
-                System.out.println("Please, provide a valid station to visit:");
-                takeStationsToVisit(newStationsToVisit, numberOfStations, stations);
-            }
-        }
-
-        return newStationsToVisit;
-
-        */
-
     }
 
     private static double calculateDistance(double x1, double y1, double x2, double y2) { //Check the Earth's radius for outdoors (For the Discussion)
@@ -164,10 +117,8 @@ public class Main {
 
         double[][] matrix = new double[numberOfStations][numberOfStations];
 
-
         DecimalFormat df = new DecimalFormat("#.###");
         df.setRoundingMode(RoundingMode.CEILING);
-
 
         for (int i = 0; i < numberOfStations; i++) {
             for (int j = 0; j < numberOfStations; j++) {
@@ -181,7 +132,6 @@ public class Main {
 
         return matrix;
     }
-
 
     private static void createFileWithDistances(double[][] matrix, int numberOfStations) throws IOException {
 
@@ -207,7 +157,6 @@ public class Main {
         FileReader f = new FileReader("DistancesMatrix.txt");
         BufferedReader b = new BufferedReader(f);
 
-
         // Our matrix is filled with the values of the file matrix
         for (int row = 0; row < size; row++) {
 
@@ -221,7 +170,6 @@ public class Main {
         }
         // Closing file
         b.close();
-
     }
 
     private static int[] takePathReferToStations(String optimalPath, ArrayList<Integer> stationsToVisit, int numberOfStations) {
@@ -407,8 +355,8 @@ public class Main {
             angle = Math.toDegrees(Math.atan2(dX, dY));
             angle = 180.0 - angle;
             dir = "ccw ";
-
         }
+
         angle = Double.parseDouble(decimals.format(angle));
         return dir + angle;
     }
