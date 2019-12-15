@@ -85,12 +85,4 @@ public class TelloDrone {
 
         }
     }
-
-    public void setLogToConsole(boolean logToConsole) {
-        this.logToConsole = logToConsole;
-    }
-
-    public boolean isLogToConsole() {
-        return logToConsole;
-    }
 }
